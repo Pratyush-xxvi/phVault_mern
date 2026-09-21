@@ -1,5 +1,6 @@
 ﻿const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { sendWelcomeEmail } = require('../services/emailService');
 
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
@@ -17,6 +18,9 @@ const register = async (req, res, next) => {
     const allowedRole = role === 'ROLE_ADMIN' ? 'ROLE_ADMIN' : 'ROLE_CUSTOMER';
     const user = await User.create({ username, email, password, role: allowedRole });
     const token = generateToken(user._id);
+
+    // Send welcome email in background (non-blocking)
+    sendWelcomeEmail(user).catch(err => console.error('[Welcome Email Error]', err));
 
     res.status(201).json({
       success: true,

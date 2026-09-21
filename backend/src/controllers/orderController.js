@@ -1,5 +1,6 @@
 ﻿const Order = require('../models/Order');
 const Vehicle = require('../models/Vehicle');
+const { sendOrderConfirmationEmail, sendOrderStatusEmail } = require('../services/emailService');
 
 // POST /api/orders  (customer)
 const placeOrder = async (req, res, next) => {
@@ -25,6 +26,14 @@ const placeOrder = async (req, res, next) => {
     });
 
     const populated = await order.populate([{ path: 'user', select: 'username email' }, { path: 'vehicle' }]);
+
+    // Send order confirmation email in background
+    sendOrderConfirmationEmail({
+      order: populated,
+      user: req.user,
+      vehicle,
+    }).catch(err => console.error('[Order Confirmation Email Error]', err));
+
     res.status(201).json({ success: true, data: populated });
   } catch (err) { next(err); }
 };
@@ -56,6 +65,17 @@ const approveOrder = async (req, res, next) => {
     const order = await Order.findByIdAndUpdate(req.params.id, { status: 'APPROVED' }, { new: true })
       .populate('user', 'username email').populate('vehicle');
     if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+
+    // Send approval status email in background
+    if (order.user && order.vehicle) {
+      sendOrderStatusEmail({
+        order,
+        user: order.user,
+        vehicle: order.vehicle,
+        status: 'APPROVED',
+      }).catch(err => console.error('[Order Approved Email Error]', err));
+    }
+
     res.json({ success: true, data: order });
   } catch (err) { next(err); }
 };
@@ -65,11 +85,24 @@ const rejectOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
     if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    
     // Restore stock
     await Vehicle.findByIdAndUpdate(order.vehicle, { $inc: { quantity: order.quantity } });
     order.status = 'REJECTED';
     await order.save();
+    
     const populated = await order.populate([{ path: 'user', select: 'username email' }, { path: 'vehicle' }]);
+
+    // Send rejection status email in background
+    if (populated.user && populated.vehicle) {
+      sendOrderStatusEmail({
+        order: populated,
+        user: populated.user,
+        vehicle: populated.vehicle,
+        status: 'REJECTED',
+      }).catch(err => console.error('[Order Rejected Email Error]', err));
+    }
+
     res.json({ success: true, data: populated });
   } catch (err) { next(err); }
 };

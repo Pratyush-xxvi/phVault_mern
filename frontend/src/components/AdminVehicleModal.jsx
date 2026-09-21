@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 
@@ -48,7 +48,7 @@ export const AdminVehicleModal = ({ vehicle, onClose, onSuccess }) => {
     try {
       let response;
       if (isEditing) {
-        response = await api.put(`/vehicles/${vehicle.id || vehicle._id}`, formData);
+        response = await api.put(`/vehicles/${(vehicle.id || vehicle._id)}`, formData);
         addToast(`Updated ${formData.make} ${formData.model} in phVault catalog!`, 'success');
       } else {
         response = await api.post('/vehicles', formData);
@@ -71,11 +71,11 @@ export const AdminVehicleModal = ({ vehicle, onClose, onSuccess }) => {
           onClick={onClose}
           className="absolute top-5 right-5 text-slate-400 hover:text-white text-sm"
         >
-          âœ•
+          ✕
         </button>
 
         <h3 className="text-2xl font-bold text-white font-heading mb-1">
-          {isEditing ? 'âœï¸ Edit Vehicle Specifications' : 'ðŸš— Add New Vehicle'}
+          {isEditing ? '✏️ Edit Vehicle Specifications' : '🚗 Add New Vehicle'}
         </h3>
         <p className="text-xs text-slate-400 mb-6">
           {isEditing ? 'Update specifications, INR price, or stock levels.' : 'Fill in vehicle information to add to the Indian catalog.'}
@@ -129,7 +129,7 @@ export const AdminVehicleModal = ({ vehicle, onClose, onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1">Price (â‚¹ INR) *</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1">Price (₹ INR) *</label>
               <input
                 type="number"
                 step="1"
@@ -228,4 +228,3 @@ export const AdminVehicleModal = ({ vehicle, onClose, onSuccess }) => {
     </div>
   );
 };
-

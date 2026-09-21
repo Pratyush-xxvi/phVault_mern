@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getOrders,
   approveOrder,
@@ -56,7 +56,7 @@ export default function AdminOrders() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-xl font-bold text-white font-heading">
-            ðŸ›¡ï¸ Customer Purchase Orders
+            🛡️ Customer Purchase Orders
           </h2>
           <p className="text-xs text-slate-400">
             Review and approve customer vehicle reservation and purchase requests.
@@ -66,7 +66,7 @@ export default function AdminOrders() {
           onClick={loadOrders}
           className="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-950/80 text-slate-300 hover:text-white border border-slate-800 transition-colors"
         >
-          ðŸ”„ Refresh Orders
+          🔄 Refresh Orders
         </button>
       </div>
 
@@ -77,7 +77,7 @@ export default function AdminOrders() {
               <th className="p-3.5">Order ID</th>
               <th className="p-3.5">Customer</th>
               <th className="p-3.5">Vehicle Model</th>
-              <th className="p-3.5">Price (â‚¹ INR)</th>
+              <th className="p-3.5">Price (₹ INR)</th>
               <th className="p-3.5">Status</th>
               <th className="p-3.5 text-center">Action</th>
             </tr>
@@ -93,7 +93,7 @@ export default function AdminOrders() {
             ) : orders.length === 0 ? (
               <tr>
                 <td colSpan="6" className="p-8 text-center text-slate-400">
-                  <div className="text-3xl mb-2">ðŸ“¦</div>
+                  <div className="text-3xl mb-2">📦</div>
                   <p className="font-semibold text-white">No Purchase Orders Found</p>
                   <p className="text-xs text-slate-400 mt-1">Customer purchase requests will appear here for admin review.</p>
                 </td>
@@ -119,7 +119,7 @@ export default function AdminOrders() {
                   </td>
 
                   <td className="p-3.5 font-mono-code text-white">
-                    {order.vehicle?.price ? formatINR(order.vehicle.price) : 'â‚¹ INR'}
+                    {order.vehicle?.price ? formatINR(order.vehicle.price) : '₹ INR'}
                   </td>
 
                   <td className="p-3.5">
@@ -132,7 +132,7 @@ export default function AdminOrders() {
                           : "bg-rose-950/60 text-rose-300 border border-rose-500/30"
                       }`}
                     >
-                      {order.status === "PENDING" ? 'âŒ› PENDING' : order.status === "APPROVED" ? 'âœ“ APPROVED' : 'âœ• REJECTED'}
+                      {order.status === "PENDING" ? '⌛ PENDING' : order.status === "APPROVED" ? '✓ APPROVED' : '✕ REJECTED'}
                     </span>
                   </td>
 
@@ -143,14 +143,14 @@ export default function AdminOrders() {
                           onClick={() => handleApprove((order.id || order._id))}
                           className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1 rounded-xl text-xs transition-all shadow-sm"
                         >
-                          âœ“ Approve
+                          ✓ Approve
                         </button>
 
                         <button
                           onClick={() => handleReject((order.id || order._id))}
                           className="bg-rose-600 hover:bg-rose-500 text-white font-bold px-3 py-1 rounded-xl text-xs transition-all shadow-sm"
                         >
-                          âœ• Reject
+                          ✕ Reject
                         </button>
                       </div>
                     ) : (

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { formatINR, formatINRLong } from '../utils/formatters';
 
 export const VehicleCard = ({
@@ -10,7 +10,7 @@ export const VehicleCard = ({
   isAdmin,
   isAuthenticated
 }) => {
-  const vehicleId = vehicle.id || vehicle._id; const { make, model, category, price, quantity, year, imageUrl, description, vin } = vehicle;
+  const { id, make, model, category, price, quantity, year, imageUrl, description, vin } = vehicle;
   const isOutOfStock = quantity === 0;
 
   const defaultImage = "/images/mahindra_thar.jpg";
@@ -47,7 +47,7 @@ export const VehicleCard = ({
                 : 'bg-emerald-950/90 text-emerald-300 border-emerald-500/40'
             }`}
           >
-            {isOutOfStock ? 'âš ï¸ Out of Stock' : `${quantity} in Stock`}
+            {isOutOfStock ? '⚠️ Out of Stock' : `${quantity} in Stock`}
           </span>
 
           {/* Title & Price Header */}
@@ -76,10 +76,10 @@ export const VehicleCard = ({
 
           <div className="flex flex-wrap items-center gap-2 pt-1">
             <span className="px-2.5 py-1 rounded-xl bg-slate-950/80 text-slate-400 text-[11px] border border-slate-800 flex items-center gap-1 font-mono-code">
-              <span>ðŸ·ï¸</span> VIN: {vin || `IN-${vehicleId}0092`}
+              <span>🏷️</span> VIN: {vin || `IN-${id}0092`}
             </span>
             <span className="px-2.5 py-1 rounded-xl bg-slate-950/80 text-slate-400 text-[11px] border border-slate-800 flex items-center gap-1">
-              <span>âš¡</span> Ex-Showroom India
+              <span>⚡</span> Ex-Showroom India
             </span>
           </div>
         </div>
@@ -105,7 +105,7 @@ export const VehicleCard = ({
               : 'gradient-bg text-white hover:brightness-110 shadow-sky-500/20 active:scale-[0.98]'
           }`}
         >
-          <span>ðŸŽï¸</span>
+          <span>🏎️</span>
           <span>
             {isOutOfStock
               ? 'OUT OF STOCK'
@@ -123,21 +123,21 @@ export const VehicleCard = ({
               className="flex-1 py-1.5 px-2 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-900/60 border border-emerald-500/30 rounded-lg text-[11px] font-semibold transition-colors"
               title="Restock Inventory"
             >
-              ðŸ“¦ Restock
+              📦 Restock
             </button>
             <button
               onClick={() => onEdit(vehicle)}
               className="flex-1 py-1.5 px-2 bg-sky-950/40 text-sky-300 hover:bg-sky-900/60 border border-sky-500/30 rounded-lg text-[11px] font-semibold transition-colors"
               title="Edit Vehicle"
             >
-              âœï¸ Edit
+              ✏️ Edit
             </button>
             <button
               onClick={() => onDelete(vehicle)}
               className="flex-1 py-1.5 px-2 bg-rose-950/40 text-rose-300 hover:bg-rose-900/60 border border-rose-500/30 rounded-lg text-[11px] font-semibold transition-colors"
               title="Delete Vehicle"
             >
-              ðŸ—‘ï¸ Delete
+              🗑️ Delete
             </button>
           </div>
         )}
@@ -145,4 +145,3 @@ export const VehicleCard = ({
     </div>
   );
 };
-

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useToast } from '../context/ToastContext';
 import { placeOrder } from "../services/orderService";
 import { formatINR, formatINRLong } from '../utils/formatters';
@@ -19,7 +19,7 @@ export const PurchaseModal = ({ vehicle, onClose, onSuccess }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await placeOrder(vehicle.id || vehicle._id, quantity, deliveryCity, buyerPhone);
+      await placeOrder((vehicle.id || vehicle._id));
       
       const successMessage = `Purchase order placed for ${vehicle.make} ${vehicle.model}! Total: ${formatINRLong(totalPrice)}`;
       addToast(successMessage, 'success');
@@ -44,12 +44,12 @@ export const PurchaseModal = ({ vehicle, onClose, onSuccess }) => {
           onClick={onClose}
           className="absolute top-5 right-5 text-slate-400 hover:text-white text-sm"
         >
-          âœ•
+          ✕
         </button>
 
         <div className="flex items-center space-x-3 mb-6">
           <div className="w-11 h-11 rounded-2xl bg-sky-500/15 text-sky-400 flex items-center justify-center text-xl border border-sky-500/20">
-            ðŸŽï¸
+            🏎️
           </div>
           <div>
             <h3 className="text-xl font-bold text-white font-heading">Reserve Vehicle Order</h3>
@@ -65,7 +65,7 @@ export const PurchaseModal = ({ vehicle, onClose, onSuccess }) => {
           </div>
           <div className="flex justify-between items-center text-xs">
             <span className="text-slate-400">Category / Year:</span>
-            <span className="font-medium text-slate-300">{vehicle.category} â€¢ {vehicle.year || 2024}</span>
+            <span className="font-medium text-slate-300">{vehicle.category} • {vehicle.year || 2024}</span>
           </div>
           <div className="flex justify-between items-center text-xs">
             <span className="text-slate-400">Ex-Showroom Price:</span>
@@ -161,7 +161,7 @@ export const PurchaseModal = ({ vehicle, onClose, onSuccess }) => {
               disabled={loading}
               className="flex-1 py-2.5 gradient-bg text-white hover:brightness-110 rounded-xl text-xs font-bold shadow-md shadow-sky-500/15 transition-all font-heading"
             >
-              {loading ? 'Processing...' : 'Confirm Order in â‚¹'}
+              {loading ? 'Processing...' : 'Confirm Order in ₹'}
             </button>
           </div>
         </form>
@@ -169,4 +169,3 @@ export const PurchaseModal = ({ vehicle, onClose, onSuccess }) => {
     </div>
   );
 };
-

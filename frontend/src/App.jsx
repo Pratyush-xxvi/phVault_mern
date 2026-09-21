@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import api from './services/api';
 import { useAuth } from './context/AuthContext';
 import { useToast } from './context/ToastContext';
@@ -250,14 +250,14 @@ export function AppContent() {
   const handleDeleteVehicle = async (vehicle) => {
     if (window.confirm(`Are you sure you want to delete ${vehicle.make} ${vehicle.model} from phVault?`)) {
       try {
-        await api.delete(`/vehicles/${vehicle.id || vehicle._id}`);
+        await api.delete(`/vehicles/${(vehicle.id || vehicle._id)}`);
         addToast(`Deleted ${vehicle.make} ${vehicle.model} from phVault inventory.`, 'info');
-        setVehicles((prev) => prev.filter((v) => v.id !== vehicle.id));
+        setVehicles((prev) => prev.filter((v) => v.id !== (vehicle.id || vehicle._id)));
       } catch (err) {
         const msg = err.response?.data?.message || 'Failed to delete vehicle.';
         addToast(msg, 'error');
         // Local state fallback
-        setVehicles((prev) => prev.filter((v) => v.id !== vehicle.id));
+        setVehicles((prev) => prev.filter((v) => v.id !== (vehicle.id || vehicle._id)));
       }
     }
   };
@@ -297,7 +297,7 @@ export function AppContent() {
                 phVault Indian Showroom Catalog ({vehicles.length})
               </h2>
               <p className="text-xs text-slate-400">
-                Browse Mahindra, Tata, Toyota, BMW, and Luxury Supercars in Indian Rupees (â‚¹).
+                Browse Mahindra, Tata, Toyota, BMW, and Luxury Supercars in Indian Rupees (₹).
               </p>
             </div>
             {isAdmin && (
@@ -326,7 +326,7 @@ export function AppContent() {
 
       {/* Footer */}
       <footer className="bg-slate-950 border-t border-slate-900 py-8 text-center text-xs text-slate-500">
-        <p>Â© 2026 phVault Automotive â€¢ Premier Indian Luxury Vault â€¢ Built with Spring Boot, React &amp; Tailwind CSS</p>
+        <p>© 2026 phVault Automotive • Premier Indian Luxury Vault • Built with Spring Boot, React &amp; Tailwind CSS</p>
       </footer>
 
       {/* Modals */}
@@ -363,4 +363,3 @@ export function AppContent() {
     </div>
   );
 }
-

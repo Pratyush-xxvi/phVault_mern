@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { VehicleCard } from './VehicleCard';
 
 export const VehicleGrid = ({
@@ -29,7 +29,7 @@ export const VehicleGrid = ({
   if (vehicles.length === 0) {
     return (
       <div className="text-center py-16 px-6 glass-panel rounded-3xl max-w-lg mx-auto">
-        <div className="text-4xl mb-3 text-sky-400">ðŸ”</div>
+        <div className="text-4xl mb-3 text-sky-400">🔍</div>
         <h3 className="text-lg font-bold text-white mb-2 font-heading">No Vehicles Found</h3>
         <p className="text-slate-400 text-xs leading-relaxed">
           No vehicles match your current search or filter criteria. Try resetting filters or searching for another vehicle model.
@@ -42,7 +42,7 @@ export const VehicleGrid = ({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {vehicles.map((vehicle) => (
         <VehicleCard
-          key={vehicle.id || vehicle._id}
+          key={(vehicle.id || vehicle._id)}
           vehicle={vehicle}
           onPurchase={onPurchase}
           onEdit={onEdit}
@@ -55,4 +55,3 @@ export const VehicleGrid = ({
     </div>
   );
 };
-

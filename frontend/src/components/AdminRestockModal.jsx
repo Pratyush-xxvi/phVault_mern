@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 
@@ -13,11 +13,11 @@ export const AdminRestockModal = ({ vehicle, onClose, onSuccess }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await api.post(`/vehicles/${vehicle.id || vehicle._id}/restock`, {
+      const response = await api.post(`/vehicles/${(vehicle.id || vehicle._id)}/restock`, {
         quantity: parseInt(restockAmount),
       });
       addToast(
-        `ðŸ“¦ Restocked ${vehicle.make} ${vehicle.model}! New stock level: ${response.data.data.quantity} units.`,
+        `📦 Restocked ${vehicle.make} ${vehicle.model}! New stock level: ${response.data.data.quantity} units.`,
         'success'
       );
       onSuccess(response.data.data);
@@ -37,12 +37,12 @@ export const AdminRestockModal = ({ vehicle, onClose, onSuccess }) => {
           onClick={onClose}
           className="absolute top-5 right-5 text-slate-400 hover:text-white text-sm"
         >
-          âœ•
+          ✕
         </button>
 
         <div className="flex items-center space-x-3 mb-6">
           <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-xl border border-emerald-500/20">
-            ðŸ“¦
+            📦
           </div>
           <div>
             <h3 className="text-xl font-bold text-white font-heading">Restock Showroom Inventory</h3>
@@ -101,4 +101,3 @@ export const AdminRestockModal = ({ vehicle, onClose, onSuccess }) => {
     </div>
   );
 };
-
